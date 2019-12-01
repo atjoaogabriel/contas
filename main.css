@@ -1,0 +1,522 @@
+html,
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+app {
+    position: fixed;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    background-color: #2368ff;
+    overflow: visible!important;
+    min-height: 100% !important;
+    max-height: 100% !important;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    bottom: calc(0px - constant(safe-area-inset-top));
+    bottom: calc(0px - env(safe-area-inset-top));
+}
+
+screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-flow: column;
+    overflow: hidden;
+}
+
+screen padding {
+    flex: 1;
+    margin: 10px;
+    display: flex;
+    min-height: calc(100% - 20px);
+    width: calc(100% - 20px);
+    flex-direction: column;
+}
+
+screen.transition {
+    transform-origin: 50% 50%;
+    transform: translateX(200%);
+    border-radius: 0;
+    transition: all ease 0.5s;
+}
+
+screen.transition.in {
+    transform: translateX(0);
+    border-radius: 0;
+}
+
+screen.transition.out {
+    transform: translateX(200%);
+    border-radius: 0;
+}
+
+spinner {
+    display: inline-block;
+    background: transparent;
+    width: 2em;
+    height: 2em;
+    position: relative;
+    margin: 10px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+spinner:after {
+    display: block;
+    content: "";
+    border-radius: 50%;
+    height: 2px;
+    width: 2px;
+    position: absolute;
+    margin: auto;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    box-shadow: 10px 0 0 2px rgba(51, 51, 51, 0.3), 7px 7px 0 2px rgba(153, 153, 153, 0.3), 0 10px 0 2px rgba(153, 153, 153, 0.3), -7px 7px 0 2px rgba(153, 153, 153, 0.3), -10px 0 0 2px rgba(153, 153, 153, 0.3), -7px -7px 0 2px rgba(153, 153, 153, 0.3), 0 -10px 0 2px rgba(51, 51, 51, 0.1), 7px -7px 0 2px rgba(17, 17, 17, 0.3);
+    -webkit-animation: rotate 0.7s steps(8) infinite;
+    -o-animation: rotate 0.7s steps(8) infinite;
+    animation: rotate 0.7s steps(8) infinite;
+}
+
+
+/* 
+const IS_IPHONE_X = SCREEN_HEIGHT === 812;
+const STATUS_BAR_HEIGHT = Platform.OS === 'ios' ? (IS_IPHONE_X ? 44 : 20) : 28;
+const NAV_BAR_HEIGHT = Platform.OS === 'ios' ? (IS_IPHONE_X ? 88 : 44) : 54;
+*/
+
+* {
+    font-family: Segoe UI, Helvetica;
+}
+
+screen[splash] {
+    justify-content: center;
+    align-items: center;
+    background-color: #2368ff;
+    background-size: cover;
+    background-repeat: no-repeat;
+    transition: top 0.5s ease;
+}
+
+screen[splash] img {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    animation: pulse2 1s infinite;
+}
+
+.loaded screen[splash] {
+    top: -200%;
+}
+
+header {
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
+    background-color: #2368ff;
+    color: #fff;
+    margin-top: -28px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+header.hide {
+    display: none;
+}
+
+.ios header {
+    margin-top: 0px;
+    box-shadow: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+header status-bar {
+    display: block;
+    height: 28px;
+}
+
+.ios header status-bar {
+    height: 20px;
+}
+
+.iphone-x header status-bar {
+    height: 44px;
+}
+
+header nav-bar {
+    display: block;
+    height: 54px;
+    position: relative;
+}
+
+.ios header nav-bar {
+    height: 44px;
+}
+
+.iphone-x header nav-bar {
+    height: 88px;
+}
+
+header back-button {
+    position: relative;
+    display: none;
+    height: 54px;
+    width: 54px;
+    white-space: nowrap;
+    vertical-align: middle;
+    float: left;
+    color: inherit;
+    justify-content: center;
+    align-content: center;
+    overflow: hidden;
+}
+
+header.show-back back-button {
+    display: inline-flex;
+    flex-flow: row;
+}
+
+.ios header back-button {
+    height: 44px;
+    width: 44px;
+}
+
+.iphone-x header back-button {
+    height: 88px;
+    width: 88px;
+}
+
+header back-button android-reflect {
+    display: inline-block;
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.5);
+    transform: scale(0);
+    opacity: 0;
+    top: calc(50% - 25px);
+    left: calc(50% - 25px);
+}
+
+header back-button:active android-reflect {
+    -webkit-animation: android-reflect 1.5s ease 0s 1;
+    animation: android-reflect 1.5s ease 0s 1;
+}
+
+.ios header back-button android-reflect {
+    display: none;
+}
+
+header back-button arrow {
+    display: inline-block;
+    position: relative;
+    color: inherit;
+    border: 1.5px solid;
+    width: 20px;
+    height: 0;
+    align-self: center;
+}
+
+header back-button arrow::before {
+    content: "";
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: inherit;
+    border: 1.5px solid;
+    width: 15px;
+    height: 0;
+    transform: rotateZ(-45deg) translateX(0px) translateY(-10px);
+}
+
+header back-button arrow::after {
+    content: "";
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: inherit;
+    border: 1.5px solid;
+    width: 15px;
+    height: 0;
+    transform: rotateZ(45deg) translateX(-2px) translateY(8px);
+}
+
+.ios header back-button arrow {
+    border-width: 0;
+}
+
+.ios header back-button arrow::before {
+    border: 1px solid;
+    left: 50%;
+    transform: rotateZ(-45deg) translateX(0px) translateY(-10px);
+}
+
+.ios header back-button arrow::after {
+    border: 1px solid;
+    left: 50%;
+    transform: rotateZ(45deg) translateX(-2px) translateY(8px);
+}
+
+header header-title {
+    display: inline-table;
+    height: 54px;
+    white-space: nowrap;
+    vertical-align: middle;
+    line-height: 54px;
+    float: left;
+    color: inherit;
+    font-weight: bold;
+    padding-left: 10px;
+}
+
+header.show-back header-title {
+    padding-left: 0;
+}
+
+.ios header header-title {
+    height: 44px;
+    line-height: 44px;
+    font-weight: normal;
+}
+
+.iphone-x header header-title {
+    height: 88px;
+    line-height: 88px;
+}
+
+header right-buttons {
+    display: inline-flex;
+    height: 54px;
+    white-space: nowrap;
+    vertical-align: middle;
+    float: right;
+    color: inherit;
+}
+
+.ios header right-buttons {
+    height: 44px;
+}
+
+.iphone-x header right-buttons {
+    height: 88px;
+}
+
+content {
+    background-color: #ececec;
+    flex: 1;
+    max-height: 100%;
+    overflow: scroll;
+    position: relative;
+}
+
+.button {
+    margin: 5px;
+    background-color: #2196F3;
+    color: #fff;
+    border: none;
+    height: 40px;
+    border-radius: 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    outline: none;
+    letter-spacing: normal;
+    word-spacing: normal;
+    text-align: center;
+    cursor: default;
+    box-sizing: border-box;
+    font: 400 13.3333px Arial;
+    padding: 1px 6px;
+}
+
+.button:hover {
+    background-color: #03a9f4
+}
+
+.button:active {
+    background-color: #00bcd4
+}
+
+.input {
+    margin: 5px;
+    background-color: #fff;
+    color: #444;
+    border: 1px solid #c5c5c5;
+    height: 40px;
+    border-radius: 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    outline: none;
+    letter-spacing: normal;
+    word-spacing: normal;
+    text-align: center;
+    cursor: default;
+    box-sizing: border-box;
+    font: 400 13.3333px Arial;
+    padding: 1px 6px;
+}
+
+.input input,
+.input select,
+.input textarea {
+    background-color: transparent;
+    border: none;
+    flex: 1;
+    padding: 0 15px;
+    outline: none;
+}
+
+.list {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.list .item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-bottom: 1px #cacaca solid;
+    height: 50px;
+}
+
+.list .item.item-mini {
+    height: 30px;
+    font-size: 9pt;
+}
+
+.list .item item-header {
+    display: block;
+    font-weight: bold;
+}
+
+.list .item item-content {
+    display: block;
+}
+
+.list .item item-note {
+    display: block;
+    opacity: 0.9;
+    font-size: xx-small;
+}
+
+
+/* ANIMATIONS */
+
+@-webkit-keyframes android-reflect {
+    from {
+        transform: scale(0);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(3);
+        opacity: 1;
+    }
+    99% {
+        transform: scale(3);
+        opacity: 0;
+    }
+    to {
+        transform: scale(0);
+        opacity: 0;
+    }
+}
+
+@keyframes android-reflect {
+    from {
+        transform: scale(0);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(3);
+        opacity: 1;
+    }
+    99% {
+        transform: scale(3);
+        opacity: 0;
+    }
+    to {
+        transform: scale(0);
+        opacity: 0;
+    }
+}
+
+@-webkit-keyframes pulse {
+    0% {
+        -webkit-box-shadow: 0 0 0 0 rgba(204, 169, 44, 0.4);
+    }
+    70% {
+        -webkit-box-shadow: 0 0 0 10px rgba(204, 169, 44, 0);
+    }
+    100% {
+        -webkit-box-shadow: 0 0 0 0 rgba(204, 169, 44, 0);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        -moz-box-shadow: 0 0 0 0 rgba(204, 169, 44, 0.4);
+        box-shadow: 0 0 0 0 rgba(204, 169, 44, 0.4);
+    }
+    70% {
+        -moz-box-shadow: 0 0 0 10px rgba(204, 169, 44, 0);
+        box-shadow: 0 0 0 10px rgba(204, 169, 44, 0);
+    }
+    100% {
+        -moz-box-shadow: 0 0 0 0 rgba(204, 169, 44, 0);
+        box-shadow: 0 0 0 0 rgba(204, 169, 44, 0);
+    }
+}
+
+@-webkit-keyframes pulse2 {
+    0% {
+        transform: scale(1);
+    }
+    70% {
+        transform: scale(1.3);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes pulse2 {
+    0% {
+        transform: scale(1);
+    }
+    70% {
+        transform: scale(1.3);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
