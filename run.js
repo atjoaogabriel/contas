@@ -37,7 +37,7 @@
                                                             _type: 'number',
                                                             _step: '0.01',
                                                             _min: "0",
-                                                            _pattern: "[0-9]*",
+                                                            _pattern: "[0-9]+([\.,][0-9]+)?",
                                                             _inputmode: "numeric",
                                                             placeholder: "Valor do lançamento"
                                                         }
