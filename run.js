@@ -37,14 +37,16 @@
                                                             _type: 'number',
                                                             _step: '0.01',
                                                             _min: "0",
+                                                            _max: "2000",
+                                                            _maxlength: "7",
                                                             _pattern: "[0-9]+([\.,][0-9]+)?",
                                                             _inputmode: "numeric",
                                                             placeholder: "Valor do lançamento",
                                                             oninput: (_e_) => {
-                                                                let real_val = parseInt(_e_.target.value);
-                                                                if (real_val == 0) real_val = "000";
-                                                                if (real_val < 10) real_val = "00" + real_val;
-                                                                if (real_val < 100) real_val = "0" + real_val;
+                                                                let real_val = parseInt(_e_.target.value.replace('.', ""));
+                                                                if (real_val < 100 && real_val >= 10) real_val = "0" + real_val;
+                                                                else if (real_val < 10 && real_val > 0) real_val = "00" + real_val;
+                                                                else if (real_val == 0) real_val = "000";
                                                                 real_val = new String(real_val);
                                                                 _e_.target.value = `${real_val.substr(0, real_val.length-2)}.${real_val.substr(-2, 2)}`
                                                             }
